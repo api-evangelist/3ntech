@@ -1,0 +1,118 @@
+generated: '2026-09-05'
+method: derived
+source: >-
+  mcp/3ntech-mcp-tools.json (live tools/list, 2026-09-05),
+  https://www.3neyecare.com/llms.txt, https://www.3neyecare.com/robots.txt,
+  https://www.3neyecare.com/policies/refund-policy
+note: >-
+  3N TECH publishes no API convention documentation of its own. Everything below is
+  derived from the JSON Schemas the live MCP endpoint returned and from the agent
+  instructions served on the company's host.
+authentication:
+  style: none-for-discovery, agent-profile-for-invocation
+  detail: >-
+    initialize and tools/list take no credential. Every tool requires
+    meta.ucp-agent.profile — a URI naming a fetchable UCP agent profile; omitting it
+    fails the call at the discovery stage. Customer-scoped operations go through the
+    Shopify Customer Account OAuth 2.0 / OIDC endpoints on account.3neyecare.com.
+  see: authentication/3ntech-authentication.yml
+transport:
+  protocol: MCP over HTTP POST (JSON-RPC 2.0)
+  endpoint: https://www.3neyecare.com/api/ucp/mcp
+  accept: application/json, text/event-stream
+  content_type: application/json
+idempotency:
+  supported: false
+  coverage: none
+  detail: >-
+    No Idempotency-Key header, no client-supplied request key, and no replay-protection
+    parameter appears in any of the 13 tool inputSchemas, in llms.txt, or in agents.md.
+    Re-issuing create_cart or create_checkout creates a new resource. The only replay
+    guard on the mutating surface is the human-approval requirement on payment, which is
+    a consent control, not an idempotency contract.
+reversibility:
+  grade: verified
+  detail: >-
+    The write surface has an explicit reversal path at every stage, and the post-purchase
+    stage carries a window the company states in its own policy.
+  reversals:
+  - write_operation: create_cart / update_cart
+    reversal_operation: cancel_cart
+    binding: mcp tool
+    window: any time before the cart is converted to a checkout
+    window_stated: false
+    note: The tool exists and is listed; no numeric window is published.
+  - write_operation: create_checkout / update_checkout
+    reversal_operation: cancel_checkout
+    binding: mcp tool
+    window: any time before complete_checkout
+    window_stated: false
+    note: >-
+      Payment is the point of no return for the agent surface; complete_checkout requires
+      contemporaneous human approval, so the agent cannot cross it unattended.
+  - write_operation: complete_checkout (order placed)
+    reversal_operation: return and refund request
+    binding: business process, not an API operation
+    window: 30 calendar days from receipt of the product
+    window_stated: true
+    window_source: https://www.3neyecare.com/policies/refund-policy
+    conditions: >-
+      Unopened and in original condition for non-defective returns; liquid products are
+      excluded from returns entirely; the returned product must ship within 10 calendar
+      days of 3N accepting the request.
+  - write_operation: complete_checkout (order placed)
+    reversal_operation: get_order
+    binding: mcp tool
+    note: Read-only status check; there is no cancel_order or refund_order tool.
+pagination:
+  style: cursor
+  applies_to: [search_catalog]
+  params:
+    cursor: catalog.pagination.cursor
+    limit: catalog.pagination.limit
+  limit_default: 10
+  limit_minimum: 1
+  source: mcp/3ntech-mcp-tools.json search_catalog inputSchema
+money:
+  representation: integer minor units paired with an ISO 4217 currency code
+  example: '{"amount": 2500, "currency": "USD"} is $25.00'
+  caution: >-
+    Every tool description repeats this; zero-decimal currencies such as JPY are already
+    whole units. Agents must convert before quoting a price to a buyer.
+  source: tool descriptions in mcp/3ntech-mcp-tools.json
+localization:
+  buyer_context_fields: [address_country, address_region, postal_code, language, currency, intent]
+  detail: >-
+    llms.txt instructs agents to pass context.address_country and context.currency for
+    accurate pricing and availability. The storefront localizes across 50+ country and
+    currency pairs.
+identifiers:
+  form: Shopify global IDs
+  example: 'gid://shopify/Checkout/abc123'
+  source: get_checkout inputSchema id description
+error_envelope:
+  shape: JSON-RPC 2.0 error object
+  fields: [code, message, data.code, data.content, data.continue_url]
+  transport_status_on_error: 422
+  see: errors/3ntech-problem-types.yml
+versioning:
+  scheme: dated protocol versions negotiated at discovery
+  current: '2026-08-25'
+  see: lifecycle/3ntech-lifecycle.yml
+rate_limit_signaling:
+  documented: true
+  detail: 'llms.txt: "The MCP endpoint is rate-limited per IP. Back off on 429 responses."'
+  headers_observed: []
+  see: rate-limits/3ntech-rate-limits.yml
+dry_run_mode:
+  supported: false
+  detail: >-
+    No sandbox, test mode, simulation flag or test-key prefix is published for this
+    storefront. Shopify's mock.shop exists but is Shopify's, not 3N's, and holds none of
+    3N's catalog.
+human_in_the_loop:
+  required_for: [complete_checkout]
+  source: https://www.3neyecare.com/robots.txt and https://www.3neyecare.com/llms.txt
+  detail: >-
+    Both documents forbid scripted or automated completion of checkout, payment or order
+    placement without an explicit, contemporaneous human approval step.

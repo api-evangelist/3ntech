@@ -1,0 +1,80 @@
+generated: '2026-09-05'
+method: probed
+status: published
+source: https://www.3neyecare.com/api/ucp/mcp
+authorship: platform
+authorship_note: >-
+  This is Shopify's Universal Commerce Protocol server (initialize returns serverInfo
+  name "universal-commerce", version 0.1.0), served under 3N Eyecare's own domain and
+  bound to 3N Eyecare's merchant identity. The tool set is the Shopify UCP shopping
+  fingerprint (create_cart / complete_checkout / search_catalog), not tooling 3N TECH
+  authored. It is a real, reachable, anonymous agent surface on the company's host and
+  is recorded as such — but it is platform-authored and must not be read as first-party
+  API design.
+deployment:
+  mode: remote
+  endpoint: https://www.3neyecare.com/api/ucp/mcp
+  auth: none
+  verified: probed
+  note: >-
+    tools/list and initialize both answered anonymously over HTTP POST with
+    Accept: application/json, text/event-stream. No install step, no package, no
+    local stdio variant is published. tools/call additionally requires a
+    meta.ucp-agent.profile URI (a fetchable agent profile), so listing is open while
+    invocation requires an agent identity — no API key or OAuth token.
+server:
+  name: universal-commerce
+  version: 0.1.0
+  transport: http
+  protocol_version: '2024-11-05'
+  url: https://www.3neyecare.com/api/ucp/mcp
+  alternate_url: https://3neyecare.myshopify.com/api/ucp/mcp
+  capabilities:
+    tools: {listChanged: true}
+    prompts: {listChanged: true}
+    resources: {listChanged: true}
+    logging: {}
+  raw_initialize: mcp/3ntech-mcp-initialize.json
+  raw_tools_list: mcp/3ntech-mcp-tools.json
+discovery:
+  ucp_profile: https://www.3neyecare.com/.well-known/ucp.json
+  agent_instructions:
+  - https://www.3neyecare.com/llms.txt
+  - https://www.3neyecare.com/agents.md
+  robots_txt_declares_endpoint: true
+merchant:
+  name: 3N Eyecare
+  origin: www.3neyecare.com
+  shop_id: '71773126944'
+  source: /.well-known/ucp.json payment_handlers['com.google.pay'].config.merchant_info
+human_approval_required: true
+human_approval_source: >-
+  https://www.3neyecare.com/robots.txt and /llms.txt both state that checkout, payment
+  and order placement must not be completed without explicit, contemporaneous human
+  approval.
+tool_count: 13
+tools:
+- {name: search_catalog, category: catalog, required: [meta, catalog]}
+- {name: lookup_catalog, category: catalog, required: [meta, catalog]}
+- {name: get_product, category: catalog, required: [meta, catalog]}
+- {name: create_cart, category: cart, required: [meta, cart]}
+- {name: get_cart, category: cart, required: [meta, id]}
+- {name: update_cart, category: cart, required: [meta, cart, id]}
+- {name: cancel_cart, category: cart, required: [meta, id]}
+- {name: create_checkout, category: checkout, required: [meta, checkout]}
+- {name: get_checkout, category: checkout, required: [meta, id]}
+- {name: update_checkout, category: checkout, required: [meta, checkout, id]}
+- {name: complete_checkout, category: checkout, required: [meta, id, checkout]}
+- {name: cancel_checkout, category: checkout, required: [meta, id]}
+- {name: get_order, category: order, required: [meta, id]}
+x-evidence:
+  fetched: '2026-09-05'
+  tools_list:
+    url: https://www.3neyecare.com/api/ucp/mcp
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 200
+    tools_returned: 13
+  initialize:
+    http_status: 200
+    server_info: universal-commerce 0.1.0

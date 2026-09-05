@@ -1,0 +1,13 @@
+generated: '2026-09-05'
+method: generated
+source: mcp/3ntech-mcp-tools.json (live tools/list, 2026-09-05)
+note: >-
+  Grounded in the 13 tool names and inputSchemas the live MCP endpoint returned, plus the
+  store's own llms.txt, robots.txt and refund policy. There is no OpenAPI for this
+  provider, so operations[] name MCP tools rather than operationIds.
+skills:
+- file: 3ntech-buy-eyecare-product.md
+  name: Buy a 3N Eyecare product through the store's UCP/MCP endpoint
+  api: mcp/3ntech-mcp.yml
+  operations: [search_catalog, get_product, lookup_catalog, create_cart, update_cart,
+    cancel_cart, create_checkout, update_checkout, complete_checkout, cancel_checkout, get_order]

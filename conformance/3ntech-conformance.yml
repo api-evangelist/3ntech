@@ -1,0 +1,76 @@
+generated: '2026-09-05'
+method: probed
+source: live probes of www.3neyecare.com, account.3neyecare.com, 2026-09-05
+note: >-
+  Every entry below is asserted from a document 3N's own hosts served or from an observed
+  response, not from a marketing claim. The conforming implementation is Shopify's;
+  3N TECH is the merchant operating it under its own domain.
+standards:
+- id: oauth2
+  conforms: true
+  evidence: https://www.3neyecare.com/.well-known/oauth-authorization-server returned 200 with issuer, token_endpoint, authorization_endpoint
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: https://www.3neyecare.com/.well-known/oauth-authorization-server (HTTP 200)
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: https://www.3neyecare.com/.well-known/oauth-protected-resource returned resource + authorization_servers[] + bearer_methods_supported
+- id: oidc-discovery
+  conforms: true
+  evidence: https://www.3neyecare.com/.well-known/openid-configuration (HTTP 200) with jwks_uri and claims_supported
+- id: rfc7636-pkce
+  conforms: true
+  evidence: code_challenge_methods_supported [S256] in the OIDC discovery document
+- id: json-rpc-2.0
+  conforms: true
+  evidence: https://www.3neyecare.com/api/ucp/mcp responds to jsonrpc 2.0 envelopes; errors carry code/message/data
+- id: mcp
+  conforms: true
+  version: '2024-11-05'
+  evidence: initialize returned protocolVersion 2024-11-05, serverInfo universal-commerce 0.1.0; tools/list returned 13 tools with JSON Schema inputSchema
+- id: json-schema-2020-12
+  conforms: true
+  evidence: every MCP tool inputSchema declares $schema https://json-schema.org/draft/2020-12/schema
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on www.3neyecare.com and account.3neyecare.com
+- id: apis-json
+  conforms: false
+  evidence: /apis.json, /apis.yml and /.well-known/apis.json all 404 on www.3neyecare.com
+- id: a2a-agent-card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json returned 404 on every reachable host
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: MCP errors use the JSON-RPC error object, not application/problem+json
+- id: openapi
+  conforms: false
+  evidence: no OpenAPI or Swagger document found on any host (see x-coverage in apis.yml)
+domain_standards:
+- id: ucp
+  name: Universal Commerce Protocol
+  version: '2026-08-25'
+  conforms: true
+  market: agentic commerce / retail checkout
+  evidence: >-
+    https://www.3neyecare.com/.well-known/ucp.json declares ucp.version 2026-08-25 plus
+    supported_versions 2026-04-08 and 2026-01-23, and the services/capabilities blocks
+    name dev.ucp.shopping (mcp transport), dev.ucp.shopping.cart, .checkout, .discount,
+    .fulfillment, .order, .catalog.search and .catalog.lookup, each with a ucp.dev spec
+    and schema URI.
+  extension_profiles:
+  - dev.shopify.catalog (extends dev.ucp.shopping.catalog.search + .catalog.lookup)
+  payment_handlers:
+  - com.google.pay
+  - dev.shopify.card
+  - dev.shopify.shop_pay
+  file: well-known/3ntech-ucp.json
+compliance:
+  published_program: false
+  note: >-
+    No trust centre, no SOC 2 / ISO 27001 / PCI attestation page and no certification
+    claim was found on any 3N host, so no Compliance pointer is emitted. The product
+    itself holds an FDA 510(k) clearance (device regulatory clearance, K211361, Suzhou 3N
+    Biological Technology Co., Ltd.) — that is a medical-device authorisation, not an
+    information-security compliance program, and is recorded here only so a reader does
+    not mistake its absence upstream for an omission.

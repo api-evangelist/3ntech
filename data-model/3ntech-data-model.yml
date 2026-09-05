@@ -1,0 +1,89 @@
+generated: '2026-09-05'
+method: derived
+source: mcp/3ntech-mcp-tools.json (live tools/list inputSchemas, 2026-09-05)
+note: >-
+  Derived from the JSON Schemas the live MCP endpoint returned. There is no OpenAPI to
+  read $refs from, so relationships are taken from the fields the tool schemas actually
+  declare (cart_id on checkout, line_items on both) and from the id form the tool
+  descriptions publish. Nothing here is inferred from another provider's model.
+identifiers:
+  form: 'gid://shopify/<Type>/<id>'
+  example: 'gid://shopify/Checkout/abc123'
+  source: get_checkout inputSchema id description
+entities:
+- name: Product
+  operations: [search_catalog, lookup_catalog, get_product]
+  fields_observed: [id, selected, preferences]
+  note: >-
+    get_product takes catalog.id plus catalog.selected (variant selection) and
+    catalog.preferences; lookup_catalog takes catalog.ids[] for batch resolution.
+- name: Cart
+  operations: [create_cart, get_cart, update_cart, cancel_cart]
+  fields_observed: [line_items, buyer, context, attribution, fulfillment, discounts]
+- name: Checkout
+  operations: [create_checkout, get_checkout, update_checkout, complete_checkout, cancel_checkout]
+  fields_observed: [payment, line_items, buyer, context, attribution, cart_id, fulfillment, discounts]
+- name: Order
+  operations: [get_order]
+  fields_observed: [id]
+  note: Read-only on this surface — no create, update, cancel or refund tool exists for an order.
+- name: Buyer
+  operations: []
+  note: An embedded object on Cart and Checkout, not addressable on its own.
+- name: LineItem
+  operations: []
+  note: An embedded collection on Cart and Checkout.
+- name: Fulfillment
+  operations: []
+  note: >-
+    Embedded on Cart and Checkout. The UCP profile declares dev.ucp.shopping.fulfillment
+    with method_combinations [["shipping"]] and no multi-destination support.
+- name: Discount
+  operations: []
+  note: Embedded on Cart and Checkout; dev.ucp.shopping.discount is declared in the UCP profile.
+relationships:
+- from: Checkout
+  to: Cart
+  type: belongs_to
+  via: cart_id
+  evidence: create_checkout inputSchema checkout.cart_id
+- from: Cart
+  to: LineItem
+  type: has_many
+  via: line_items
+- from: Checkout
+  to: LineItem
+  type: has_many
+  via: line_items
+- from: Cart
+  to: Buyer
+  type: has_one
+  via: buyer
+- from: Checkout
+  to: Buyer
+  type: has_one
+  via: buyer
+- from: Checkout
+  to: Fulfillment
+  type: has_one
+  via: fulfillment
+- from: Cart
+  to: Fulfillment
+  type: has_one
+  via: fulfillment
+- from: Checkout
+  to: Discount
+  type: has_many
+  via: discounts
+- from: Order
+  to: Checkout
+  type: belongs_to
+  via: implied by complete_checkout
+  confidence: medium
+  note: >-
+    complete_checkout is the only path to an order on this surface, but no field in any
+    tool schema names the link explicitly, so this edge is inferred from the flow rather
+    than read from a schema.
+money:
+  representation: '{amount: integer minor units, currency: ISO 4217 code}'
+  source: every tool description in mcp/3ntech-mcp-tools.json

@@ -1,0 +1,45 @@
+generated: '2026-09-05'
+method: probed
+source: https://www.3neyecare.com/.well-known/ucp.json, live MCP initialize
+versioning:
+  scheme: dated protocol versions, negotiated at discovery
+  current: '2026-08-25'
+  supported:
+  - version: '2026-08-25'
+    role: latest stable
+    discovery: https://www.3neyecare.com/.well-known/ucp.json
+  - version: '2026-04-08'
+    discovery: https://3neyecare.myshopify.com/.well-known/ucp/2026-04-08
+  - version: '2026-01-23'
+    discovery: https://3neyecare.myshopify.com/.well-known/ucp/2026-01-23
+  mcp_protocol_version: '2024-11-05'
+  note: >-
+    Three protocol versions are served side by side, each at its own discovery document —
+    a real, machine-readable version ladder, though the ladder is Shopify's and moves for
+    every store on the platform at once.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  detail: >-
+    No deprecation policy, no RFC 8594 Sunset/Deprecation header, and no published
+    retirement schedule for the older UCP versions. No Deprecation pointer is emitted.
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  detail: >-
+    3N TECH operates no status page. status.shopify.com covers the underlying platform
+    but belongs to Shopify, not to this company, so no StatusPage pointer is emitted —
+    pointing at a vendor's status page would credit 3N with operational transparency it
+    does not publish.
+change_log:
+  url: null
+  detail: No dated changelog for the commerce surface, the store, or the products.
+deprecated_operations: []
+product_lifecycle:
+  note: >-
+    Recorded for context, not as an API signal — the catalog currently lists the ReO2
+    Gen 6, ReO2 Scleral Lens Cleaner and Optipure kits, indicating a generational hardware
+    line (Gen 6 shipping as of this pass, earlier generations 5.0 PRO and Mini still sold
+    through third-party retailers).

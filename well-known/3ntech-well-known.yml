@@ -1,0 +1,102 @@
+generated: '2026-09-05'
+method: probed
+source: live HTTP probe of every host this record knows, 2026-09-05
+note: >-
+  3N TECH publishes no /.well-known/ surface on its corporate domain (3nbio.com, which
+  rate-limited every probe from this run — see path_notes). The documents recorded below
+  are served by the 3N Eyecare storefront and its customer-account host, and are generated
+  by Shopify, the platform the storefront runs on. They are real documents served under
+  3N's own domains, so they are recorded here; the authorship is noted so the surface is
+  not read as first-party API design.
+hit_count: 8
+path_echo_control: passed
+soft_404_control:
+  path: /.well-known/3ntech-negative-control-7f3ab91c.json
+  status: 404
+  note: >-
+    Both storefront hosts return a 404 HTML page for a path that cannot exist, so the
+    200s below are genuine documents and not a catch-all.
+hosts:
+- host: https://www.3neyecare.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: 3ntech-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: 3ntech-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: 3ntech-oauth-protected-resource.json
+  - path: /.well-known/ucp.json
+    status: 200
+    file: 3ntech-ucp.json
+  - path: /.well-known/ucp
+    status: 200
+    file: 3ntech-ucp.json
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://account.3neyecare.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: 3ntech-account-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: 3ntech-account-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: 3ntech-account-oauth-protected-resource.json
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 406
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://3nbio.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 429
+  - path: /.well-known/agent-card.json
+    status: 429
+  - path: /.well-known/agent.json
+    status: 429
+  - path: /apis.json
+    status: 429
+path_notes:
+  3nbio.com: >-
+    The corporate site (Tengine / Alibaba Cloud, mainland China) answered the first two
+    requests of this run with 200 and then returned HTTP 429 "Too Many Requests" to every
+    subsequent probe, including on a second attempt minutes later. Its /.well-known/ surface
+    is therefore unmeasured, not measured-absent.
+  account.3neyecare.com: >-
+    Discovered from authorization_servers[] in the storefront's own
+    /.well-known/oauth-protected-resource document.

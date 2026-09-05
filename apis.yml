@@ -1,23 +1,112 @@
 aid: 3ntech
 name: 3N TECH
-description: '3N TECH is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: '3N TECH (Suzhou 3N Biological Technology Co., Ltd.) is a Chinese eye-care
+  medical-device maker founded in 2015 and headquartered in Suzhou Industrial Park
+  BioBAY, with an international arm selling in Hong Kong and the United States. It
+  develops active contact-lens care hardware built on its patented Electrophoresis-Disintegration
+  ("Elepy") technology, and shipped the first contact-lens cleaner to hold an FDA 510(k)
+  clearance for that mechanism. The company sells under two brands: 3N in mainland
+  China and ReO2 internationally, through the 3N Eyecare direct-to-consumer storefront.
+  3N TECH publishes no developer program and no OpenAPI. Its only machine-readable,
+  publicly callable surface is the agentic-commerce layer on its own storefront host:
+  an anonymous UCP (Universal Commerce Protocol) merchant profile at
+  /.well-known/ucp.json, an unauthenticated MCP endpoint at /api/ucp/mcp serving 13
+  cart, checkout, order and catalog tools, an llms.txt / agents.md pair of agent
+  instructions, and Shopify Customer Account OAuth 2.0 / OpenID Connect discovery
+  documents. That surface is platform-authored by Shopify and served under the
+  company''s domain, which this profile records explicitly rather than crediting it
+  as first-party API design.'
+image: https://www.3neyecare.com/cdn/shop/files/LOGO.png?v=1683448741
 url: https://raw.githubusercontent.com/api-evangelist/3ntech/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-05'
 modified: '2026-09-05'
 tags:
 - Company
-apis: []
+- Eye Care
+- Medical Devices
+- Consumer Health
+- Contact Lenses
+- Ecommerce
+- Agentic Commerce
+- Universal Commerce Protocol
+- Model Context Protocol
+- Manufacturing
+apis:
+- name: 3N Eyecare Agentic Commerce (UCP / MCP)
+  description: The Universal Commerce Protocol shopping service 3N Eyecare exposes on
+    its own storefront host. An anonymous JSON-RPC 2.0 MCP endpoint serves 13 tools
+    for catalog search and lookup, cart create/update/cancel, checkout create/update/
+    complete/cancel and order retrieval, each with a published JSON Schema inputSchema.
+    Checkout completion requires contemporaneous human approval, which the store states
+    in both robots.txt and llms.txt. The runtime is Shopify's UCP implementation
+    (serverInfo name "universal-commerce", version 0.1.0), served under the 3N Eyecare
+    merchant identity (merchant_name "3N Eyecare", merchant_origin www.3neyecare.com).
+  image: https://www.3neyecare.com/cdn/shop/files/LOGO.png?v=1683448741
+  humanURL: https://www.3neyecare.com/llms.txt
+  baseURL: https://www.3neyecare.com/api/ucp/mcp
+  tags:
+  - Agentic Commerce
+  - Model Context Protocol
+  - Universal Commerce Protocol
+  - Ecommerce
+  properties:
+  - type: MCPServer
+    url: mcp/3ntech-mcp.yml
+  - type: LLMsTxt
+    url: llms/3ntech-llms.txt
+common:
+- type: DomainSecurity
+  url: security/3ntech-domain-security.yml
+- type: Website
+  url: https://www.3neyecare.com/
+- type: Documentation
+  url: https://www.3neyecare.com/agents.md
+- type: Blog
+  url: https://www.3neyecare.com/blogs/news
+- type: Support
+  url: https://www.3neyecare.com/pages/contact
+- type: SignUp
+  url: https://account.3neyecare.com/
+- type: TermsOfService
+  url: https://www.3neyecare.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.3neyecare.com/policies/privacy-policy
+- type: MCPServer
+  url: mcp/3ntech-mcp.yml
+- type: LLMsTxt
+  url: llms/3ntech-llms.txt
+- type: WellKnown
+  url: well-known/3ntech-well-known.yml
+- type: Authentication
+  url: authentication/3ntech-authentication.yml
+- type: OAuthScopes
+  url: scopes/3ntech-scopes.yml
+- type: Conformance
+  url: conformance/3ntech-conformance.yml
+- type: Conventions
+  url: conventions/3ntech-conventions.yml
+- type: ErrorCatalog
+  url: errors/3ntech-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/3ntech-lifecycle.yml
+- type: DataModel
+  url: data-model/3ntech-data-model.yml
+- type: RateLimits
+  url: rate-limits/3ntech-rate-limits.yml
+- type: Plans
+  url: plans/3ntech-plans-pricing.yml
+- type: AgentSkill
+  url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://equityzen.com/company/3ntech
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v3

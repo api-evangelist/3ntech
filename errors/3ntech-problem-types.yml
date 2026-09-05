@@ -1,0 +1,40 @@
+generated: '2026-09-05'
+method: probed
+format: json-rpc-2.0
+source: live probes of https://www.3neyecare.com/api/ucp/mcp, 2026-09-05
+note: >-
+  Not RFC 9457. There is no OpenAPI to derive 4xx/5xx responses from and 3N TECH publishes
+  no error reference, so the envelope and the one observed error below were established by
+  issuing real requests to the live endpoint and recording what came back.
+envelope:
+  transport: HTTP
+  error_status: 422
+  body_shape:
+    jsonrpc: '2.0'
+    id: echoes the request id
+    error:
+      code: JSON-RPC integer error code
+      message: human-readable summary
+      data:
+        code: machine-readable sub-code
+        content: detail string
+        continue_url: a URL a human can open to finish the action in a browser
+problems:
+- code: -32001
+  data_code: invalid_profile_url
+  title: UCP discovery failed
+  detail: 'Unable to fetch agent profile: Missing profile uri'
+  http_status: 422
+  observed: true
+  triggered_by: >-
+    any request whose params omit meta.ucp-agent.profile — observed on tools/call,
+    resources/list and an unknown method alike
+  remediation: >-
+    Supply meta.ucp-agent.profile with a fetchable UCP agent profile URI. Discovery is
+    evaluated before method dispatch, so this error masks method-not-found as well.
+  continue_url: https://3neyecare.myshopify.com/
+unobserved:
+  note: >-
+    Rate limiting is documented (HTTP 429) but was not triggered during this pass, so no
+    429 body is recorded. No 5xx was observed. Nothing here is inferred from the spec of
+    another provider.

@@ -1,0 +1,21 @@
+generated: '2026-09-05'
+method: searched
+source: https://www.3neyecare.com/collections/all, https://www.3neyecare.com/products.json
+plan_count: 0
+note: >-
+  3N TECH sells physical eye-care devices and consumables, not API access. There are no
+  API plans, tiers, quotas, overages or metered pricing of any kind, and the agent surface
+  is free to call. What the store publishes is product pricing, and it publishes it
+  machine-readably at /products.json — recorded below as context so the zero is legible,
+  not as an API price list.
+plans: []
+product_pricing:
+  machine_readable: https://www.3neyecare.com/products.json
+  human: https://www.3neyecare.com/collections/all
+  currency_default: USD
+  currencies_supported: 25+ across 50+ country/region pairs
+  examples:
+  - {product: ReO2 Gen 6, handle: reo2-dry-eye-relief-contact-lens-cleaner, price: '99.00', currency: USD}
+  - {product: ReO2 Scleral Lens Cleaner, handle: reo2-scleral-lens-cleaner, price: '299.00', currency: USD}
+  - {product: Optipure 0.9% Quarterly Clean Kit, handle: optipure-0-9-quarterly-clean-kit, price: '160.00', currency: USD}
+  observed: '2026-09-05'

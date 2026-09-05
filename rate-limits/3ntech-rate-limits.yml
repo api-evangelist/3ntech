@@ -1,0 +1,30 @@
+generated: '2026-09-05'
+method: searched
+source: https://www.3neyecare.com/llms.txt
+limit_count: 0
+note: >-
+  A rate limit is documented but never quantified. llms.txt states: "Respect rate limits.
+  The MCP endpoint is rate-limited per IP. Back off on 429 responses." No number, no
+  window, no burst, and no RateLimit-* or X-RateLimit-* header appeared on any of the
+  responses observed during this pass, so an agent has the exhaustion signal but no way to
+  budget against it in advance. Recorded as an honest zero rather than a guess.
+limits: []
+signaling:
+  status_on_exhaustion: 429
+  retry_after_header: null
+  headers_observed: []
+  headers_documented: []
+  guidance: back off on 429
+observations:
+- host: https://www.3neyecare.com
+  surface: /api/ucp/mcp
+  requests_issued: 6
+  rate_limited: false
+- host: https://3nbio.com
+  surface: whole site
+  requests_issued: 14
+  rate_limited: true
+  detail: >-
+    The corporate site (Tengine) returned 200 on the first two requests of this run and
+    HTTP 429 on every one after, including a retry minutes later. This is the company's
+    marketing site, not an API, but it is the only place a real rate limit was hit.

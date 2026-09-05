@@ -1,0 +1,58 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  https://www.3neyecare.com/.well-known/openid-configuration,
+  https://www.3neyecare.com/.well-known/oauth-authorization-server,
+  https://www.3neyecare.com/.well-known/oauth-protected-resource,
+  live probe of https://www.3neyecare.com/api/ucp/mcp
+note: >-
+  Derived from the OAuth/OIDC discovery documents the storefront actually serves and from
+  observed behaviour of the MCP endpoint. 3N TECH publishes no OpenAPI, so there are no
+  securitySchemes to aggregate; these are Shopify Customer Account identity endpoints
+  running under 3N's own hosts.
+summary:
+  types: [oauth2, openIdConnect, none]
+  api_key_in: []
+  oauth2_flows: [authorizationCode, refreshToken, jwt-bearer]
+schemes:
+- name: anonymous-mcp
+  type: none
+  applies_to: https://www.3neyecare.com/api/ucp/mcp
+  description: >-
+    MCP initialize and tools/list are served with no credential of any kind. tools/call
+    is not open: it requires meta.ucp-agent.profile to carry a fetchable agent profile
+    URI, and a call without one returns JSON-RPC error -32001 invalid_profile_url over
+    HTTP 422. That is an agent-identity requirement, not a bearer credential.
+  evidence: observed 2026-09-05, tools/list HTTP 200 anonymous
+- name: shopify-customer-account-oidc
+  type: openIdConnect
+  openIdConnectUrl: https://www.3neyecare.com/.well-known/openid-configuration
+  issuer: https://shopify.com/authentication/71773126944
+  authorization_endpoint: https://account.3neyecare.com/authentication/oauth/authorize
+  token_endpoint: https://account.3neyecare.com/authentication/oauth/token
+  jwks_uri: https://account.3neyecare.com/authentication/.well-known/jwks.json
+  end_session_endpoint: https://account.3neyecare.com/authentication/logout
+  response_types_supported: [code]
+  grant_types_supported: [authorization_code, refresh_token, 'urn:ietf:params:oauth:grant-type:jwt-bearer']
+  token_endpoint_auth_methods_supported: [client_secret_basic, client_secret_post]
+  code_challenge_methods_supported: [S256]
+  id_token_signing_alg_values_supported: [RS256]
+  subject_types_supported: [public]
+  claims_supported: [iss, sub, aud, exp, iat, nonce, sid, email, email_verified]
+  sources: [well-known/3ntech-openid-configuration.json]
+- name: shopify-customer-account-oauth2
+  type: oauth2
+  metadata: https://www.3neyecare.com/.well-known/oauth-authorization-server
+  rfc: RFC 8414
+  sources: [well-known/3ntech-oauth-authorization-server.json]
+protected_resources:
+- resource: https://www.3neyecare.com
+  authorization_servers:
+  - https://account.3neyecare.com
+  - https://shopify.com/authentication/71773126944
+  bearer_methods_supported: [header]
+  rfc: RFC 9728
+  source: well-known/3ntech-oauth-protected-resource.json
+- resource: https://account.3neyecare.com
+  rfc: RFC 9728
+  source: well-known/3ntech-account-oauth-protected-resource.json

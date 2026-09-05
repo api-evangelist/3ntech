@@ -64,5 +64,31 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-3N TECH is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://equityzen.com/company/3ntech
+3N TECH (Suzhou 3N Biological Technology Co., Ltd.) is a Chinese eye-care medical-device maker
+founded in 2015 and headquartered in Suzhou Industrial Park BioBAY, selling internationally through
+a Hong Kong entity. It develops active contact-lens care hardware built on its patented
+Electrophoresis-Disintegration ("Elepy") technology, and shipped the first contact-lens cleaner to
+hold an FDA 510(k) clearance for that mechanism. Products sell as **3N** in mainland China and
+**ReO2** internationally.
+
+## What this profile found
+
+3N TECH publishes **no developer program, no API reference and no OpenAPI**. Its only
+machine-readable, publicly callable surface is the agentic-commerce layer on its own storefront
+host, `www.3neyecare.com`:
+
+- a Universal Commerce Protocol merchant profile at `/.well-known/ucp.json` (UCP `2026-08-25`,
+  with `2026-04-08` and `2026-01-23` also served)
+- an **anonymous MCP endpoint** at `/api/ucp/mcp` serving 13 catalog, cart, checkout and order
+  tools with published JSON Schema input schemas
+- `/llms.txt` and `/agents.md` agent instructions, and a `robots.txt` that names the endpoint
+- Shopify Customer Account OAuth 2.0 / OpenID Connect discovery documents on
+  `www.3neyecare.com` and `account.3neyecare.com`
+
+That surface is **platform-authored by Shopify** and served under 3N's domain. It is real,
+reachable and recorded as such — but it is not first-party API design, and every artifact here
+says so.
+
+- Store: https://www.3neyecare.com/
+- Corporate site: https://www.3nbio.com/ (rate-limited every probe from this run; unmeasured)
+- Secondary-market listing: https://equityzen.com/company/3ntech
