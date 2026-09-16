@@ -29,6 +29,17 @@ tags:
 - Medical Devices
 - Consumer Health
 - Contact Lenses
+- E-Commerce
+- Agentic Commerce
+- Universal Commerce Protocol
+- MCP
+- Manufacturing
+tags_raw:
+- Company
+- Eye Care
+- Medical Devices
+- Consumer Health
+- Contact Lenses
 - Ecommerce
 - Agentic Commerce
 - Universal Commerce Protocol
@@ -48,6 +59,11 @@ apis:
   humanURL: https://www.3neyecare.com/llms.txt
   baseURL: https://www.3neyecare.com/api/ucp/mcp
   tags:
+  - Agentic Commerce
+  - MCP
+  - Universal Commerce Protocol
+  - E-Commerce
+  tags_raw:
   - Agentic Commerce
   - Model Context Protocol
   - Universal Commerce Protocol
