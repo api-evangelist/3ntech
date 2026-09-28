@@ -3,25 +3,21 @@ method: probed
 status: published
 source: https://www.3neyecare.com/api/ucp/mcp
 authorship: platform
-authorship_note: >-
-  This is Shopify's Universal Commerce Protocol server (initialize returns serverInfo
-  name "universal-commerce", version 0.1.0), served under 3N Eyecare's own domain and
-  bound to 3N Eyecare's merchant identity. The tool set is the Shopify UCP shopping
-  fingerprint (create_cart / complete_checkout / search_catalog), not tooling 3N TECH
-  authored. It is a real, reachable, anonymous agent surface on the company's host and
-  is recorded as such — but it is platform-authored and must not be read as first-party
+authorship_note: This is Shopify's Universal Commerce Protocol server (initialize returns serverInfo name
+  "universal-commerce", version 0.1.0), served under 3N Eyecare's own domain and bound to 3N Eyecare's
+  merchant identity. The tool set is the Shopify UCP shopping fingerprint (create_cart / complete_checkout
+  / search_catalog), not tooling 3N TECH authored. It is a real, reachable, anonymous agent surface on
+  the company's host and is recorded as such — but it is platform-authored and must not be read as first-party
   API design.
 deployment:
   mode: remote
   endpoint: https://www.3neyecare.com/api/ucp/mcp
   auth: none
   verified: probed
-  note: >-
-    tools/list and initialize both answered anonymously over HTTP POST with
-    Accept: application/json, text/event-stream. No install step, no package, no
-    local stdio variant is published. tools/call additionally requires a
-    meta.ucp-agent.profile URI (a fetchable agent profile), so listing is open while
-    invocation requires an agent identity — no API key or OAuth token.
+  note: 'tools/list and initialize both answered anonymously over HTTP POST with Accept: application/json,
+    text/event-stream. No install step, no package, no local stdio variant is published. tools/call additionally
+    requires a meta.ucp-agent.profile URI (a fetchable agent profile), so listing is open while invocation
+    requires an agent identity — no API key or OAuth token.'
 server:
   name: universal-commerce
   version: 0.1.0
@@ -30,9 +26,12 @@ server:
   url: https://www.3neyecare.com/api/ucp/mcp
   alternate_url: https://3neyecare.myshopify.com/api/ucp/mcp
   capabilities:
-    tools: {listChanged: true}
-    prompts: {listChanged: true}
-    resources: {listChanged: true}
+    tools:
+      listChanged: true
+    prompts:
+      listChanged: true
+    resources:
+      listChanged: true
     logging: {}
   raw_initialize: mcp/3ntech-mcp-initialize.json
   raw_tools_list: mcp/3ntech-mcp-tools.json
@@ -48,25 +47,141 @@ merchant:
   shop_id: '71773126944'
   source: /.well-known/ucp.json payment_handlers['com.google.pay'].config.merchant_info
 human_approval_required: true
-human_approval_source: >-
-  https://www.3neyecare.com/robots.txt and /llms.txt both state that checkout, payment
-  and order placement must not be completed without explicit, contemporaneous human
-  approval.
+human_approval_source: https://www.3neyecare.com/robots.txt and /llms.txt both state that checkout, payment
+  and order placement must not be completed without explicit, contemporaneous human approval.
 tool_count: 13
 tools:
-- {name: search_catalog, category: catalog, required: [meta, catalog]}
-- {name: lookup_catalog, category: catalog, required: [meta, catalog]}
-- {name: get_product, category: catalog, required: [meta, catalog]}
-- {name: create_cart, category: cart, required: [meta, cart]}
-- {name: get_cart, category: cart, required: [meta, id]}
-- {name: update_cart, category: cart, required: [meta, cart, id]}
-- {name: cancel_cart, category: cart, required: [meta, id]}
-- {name: create_checkout, category: checkout, required: [meta, checkout]}
-- {name: get_checkout, category: checkout, required: [meta, id]}
-- {name: update_checkout, category: checkout, required: [meta, checkout, id]}
-- {name: complete_checkout, category: checkout, required: [meta, id, checkout]}
-- {name: cancel_checkout, category: checkout, required: [meta, id]}
-- {name: get_order, category: order, required: [meta, id]}
+- name: search_catalog
+  category: catalog
+  required:
+  - meta
+  - catalog
+  description: Search for products from the online store, hosted on Shopify.  This tool can be used to
+    search for products using natural language queries, specific filter criteria, or both. At least one
+    of query or filters must be provided.  Results are paginated, with initial results limited to improve
+    experience. Use the pagination.cursor from the response to fetch additional pages when users request
+    more resu…
+- name: lookup_catalog
+  category: catalog
+  required:
+  - meta
+  - catalog
+  description: 'Look up multiple products or variants by identifier. Use this tool to resolve multiple
+    product/variant IDs in a single request.  Supports: - Product IDs (gid://shopify/Product/...): Returns
+    product with match: "featured" - Variant IDs (gid://shopify/ProductVariant/...): Returns parent product
+    with the exact variant  Results are grouped by product. Each variant includes an inputs array showing
+    whic…'
+- name: get_product
+  category: catalog
+  required:
+  - meta
+  - catalog
+  description: Retrieve complete product detail by identifier. Returns a singular product with a relevant
+    set of variants, exact pricing, and real-time availability. Supports interactive option selection
+    via selected and preferences parameters for variant narrowing and availability signals. Use for product
+    detail page rendering and purchase decisions.  Prices in the response are integers in the currency's
+    ISO 42…
+- name: create_cart
+  category: cart
+  required:
+  - meta
+  - cart
+  description: 'Creates a new cart  Prices in the response are integers in the currency''s ISO 4217 minor
+    units, paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount": 2500,
+    "currency": "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide by
+    100 for two-decimal currencies such as USD and EUR; zero-decimal currencies such as JPY are already
+    whole units)…'
+- name: get_cart
+  category: cart
+  required:
+  - meta
+  - id
+  description: 'Get the cart contents  Prices in the response are integers in the currency''s ISO 4217
+    minor units, paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount":
+    2500, "currency": "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide
+    by 100 for two-decimal currencies such as USD and EUR; zero-decimal currencies such as JPY are already
+    whole uni…'
+- name: update_cart
+  category: cart
+  required:
+  - meta
+  - cart
+  - id
+  description: 'Perform updates to a cart.  Prices in the response are integers in the currency''s ISO
+    4217 minor units, paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount":
+    2500, "currency": "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide
+    by 100 for two-decimal currencies such as USD and EUR; zero-decimal currencies such as JPY are already
+    whol…'
+- name: cancel_cart
+  category: cart
+  required:
+  - meta
+  - id
+  description: 'Cancels a cart.  Prices in the response are integers in the currency''s ISO 4217 minor
+    units, paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount": 2500,
+    "currency": "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide by
+    100 for two-decimal currencies such as USD and EUR; zero-decimal currencies such as JPY are already
+    whole units).'
+- name: create_checkout
+  category: checkout
+  required:
+  - meta
+  - checkout
+  description: 'Creates a checkout. Returns checkout details, including line items, totals, and any applicable
+    discounts or taxes.  Prices in the response are integers in the currency''s ISO 4217 minor units,
+    paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount": 2500, "currency":
+    "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide by 100 for two-deci…'
+- name: get_checkout
+  category: checkout
+  required:
+  - meta
+  - id
+  description: 'Returns details about the checkout, including line items, totals, and any applicable discounts
+    or taxes.  Prices in the response are integers in the currency''s ISO 4217 minor units, paired with
+    a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount": 2500, "currency": "USD"}
+    is $25.00. Convert to major units before quoting a price to a buyer (divide by 100 for two-decimal
+    curren…'
+- name: update_checkout
+  category: checkout
+  required:
+  - meta
+  - checkout
+  - id
+  description: 'Updates a checkout. Returns checkout details, including line items, totals, and any applicable
+    discounts or taxes.  Prices in the response are integers in the currency''s ISO 4217 minor units,
+    paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount": 2500, "currency":
+    "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide by 100 for two-deci…'
+- name: complete_checkout
+  category: checkout
+  required:
+  - meta
+  - id
+  - checkout
+  description: 'Completes a checkout and returns the checkout result. Returns details about the completed
+    checkout, including order ID, Thank You Page URL, or any errors encountered.  Prices in the response
+    are integers in the currency''s ISO 4217 minor units, paired with a currency code: {"amount": 600,
+    "currency": "USD"} is $6.00 and {"amount": 2500, "currency": "USD"} is $25.00. Convert to major units
+    before qu…'
+- name: cancel_checkout
+  category: checkout
+  required:
+  - meta
+  - id
+  description: 'Cancels a checkout.  Prices in the response are integers in the currency''s ISO 4217 minor
+    units, paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount": 2500,
+    "currency": "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide by
+    100 for two-decimal currencies such as USD and EUR; zero-decimal currencies such as JPY are already
+    whole units…'
+- name: get_order
+  category: order
+  required:
+  - meta
+  - id
+  description: 'Get the details of an order  Prices in the response are integers in the currency''s ISO
+    4217 minor units, paired with a currency code: {"amount": 600, "currency": "USD"} is $6.00 and {"amount":
+    2500, "currency": "USD"} is $25.00. Convert to major units before quoting a price to a buyer (divide
+    by 100 for two-decimal currencies such as USD and EUR; zero-decimal currencies such as JPY are already
+    who…'
 x-evidence:
   fetched: '2026-09-05'
   tools_list:
@@ -78,3 +193,5 @@ x-evidence:
   initialize:
     http_status: 200
     server_info: universal-commerce 0.1.0
+descriptions_source: live tools/list (authorship probe or saved capture); filled by backfill-tools-from-authorship.py
+  --descriptions, 2026-09-28
