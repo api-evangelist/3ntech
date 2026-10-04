@@ -73,6 +73,9 @@ apis:
     url: mcp/3ntech-mcp.yml
   - type: LLMsTxt
     url: llms/3ntech-llms.txt
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 common:
 - type: DomainSecurity
   url: security/3ntech-domain-security.yml
