@@ -22,7 +22,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-09-05'
-modified: '2026-09-05'
+modified: '2026-10-06'
 tags:
 - Company
 - Eye Care
@@ -77,6 +77,8 @@ apis:
   x-platform: shopify
   x-platform-surface: ucp
 common:
+- url: https://www.3neyecare.com/blogs/news.atom
+  type: BlogRSS
 - type: DomainSecurity
   url: security/3ntech-domain-security.yml
 - type: Website
