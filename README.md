@@ -90,26 +90,26 @@ Model Context Protocol servers that expose the API to agents.
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [3Ntech Authentication](https://apis.io/security/3ntech/3ntech-authentication/)
-- [3Ntech Domain Security](https://apis.io/security/3ntech/3ntech-domain-security/)
+- [3N TECH Authentication](https://apis.io/security/3ntech/3ntech-authentication/)
+- [3N TECH Domain Security](https://apis.io/security/3ntech/3ntech-domain-security/)
 
 #### OAuth scopes (1)
 
 The permissions the API asks for.
 
-- [3Ntech Scopes](https://apis.io/scopes/3ntech/3ntech-scopes/)
+- [3N TECH Scopes](https://apis.io/scopes/3ntech/3ntech-scopes/)
 
 #### Plans and pricing (1)
 
 Published plans, tiers and prices.
 
-- [3Ntech Plans Pricing](https://apis.io/plans/3ntech/3ntech-plans-pricing/)
+- [3N TECH Plans Pricing](https://apis.io/plans/3ntech/3ntech-plans-pricing/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [3Ntech Rate Limits](https://apis.io/rate-limits/3ntech/3ntech-rate-limits/)
+- [3N TECH Rate Limits](https://apis.io/rate-limits/3ntech/3ntech-rate-limits/)
 
 ## Where to find this API
 
@@ -125,7 +125,7 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 25.7** — emerging · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 26.2** — thin · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
@@ -134,9 +134,9 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Contract governance | 18.2 |
 | Operational transparency | 0.0 |
 | Developer ergonomics | 30.4 |
-| Access clarity | 34.2 |
+| Access clarity | 40.4 |
 
-**Agent readiness 23.7** — agent-aware
+**Agent readiness 23.2** — agent-aware
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -161,8 +161,12 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | platform (partial credit) |
 | Pagination Ratio | na |
 | Operation Distinctiveness | na |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
-**Regulatory alignment 32.8** — Health
+**Regulatory alignment 28.1** — Health
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/3ntech/](https://apis.io/providers/3ntech/).
 
